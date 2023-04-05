@@ -1080,8 +1080,13 @@ LGAlertViewType;
     // -----
 
     self.viewController = [[LGAlertViewController alloc] initWithAlertView:self view:self.view];
-
-    self.window = [[LGAlertViewWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    for (UIScene *scene in [[[UIApplication sharedApplication] connectedScenes] allObjects]) {
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            self.window = [[LGAlertViewWindow alloc] initWithWindowScene:(UIWindowScene *)scene];
+            self.window.frame = [UIScreen mainScreen].bounds;
+            break;
+        }
+    }
     self.window.hidden = YES;
     self.window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.window.opaque = NO;
